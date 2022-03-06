@@ -1,13 +1,16 @@
 package org.hionesoft.crudmaker.client.make_crud.java.spring;
 
-import com.google.common.net.HttpHeaders;
 import lombok.RequiredArgsConstructor;
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
+import org.hionesoft.crudmaker.utils.DDLParserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,16 +34,33 @@ public class MakeCrudJavaSpringRestCtroller {
     private final MakeCrudJavaSpringService makeCrudJavaSpringService;
 
     @PostMapping("/create")
-    public void makeCrudJavaSpring(HttpServletResponse response){
+    public void makeCrudJavaSpring(
+            @RequestParam(required = false, defaultValue = "oracle") String dbType,
+            @RequestParam String ddl,
+            HttpServletResponse response){
         String fileName = "test";
         List<File> fileList = new ArrayList<>();
 
         FileOutputStream fos = null;
         ZipOutputStream zipOut = null;
         FileInputStream fis = null;
+
+        String tablename = "";
+        List<ColumnDefinition> columnDefinitions = null;
         
         // 1. SQL DDL 분석 및 변수 세팅
+        try {
+            Statement statement = DDLParserUtil.parseDdl(ddl);
+            tablename = DDLParserUtil.getTablenameByDdl(statement);
+            columnDefinitions = DDLParserUtil.getColumninfosByDdl(statement);
+        } catch (JSQLParserException e) {
+            String msg = e.getMessage();
+            Logger.error(msg);
+            // TODO : Error Throw 처리
+        }
         
+        //TODO : 파일 생성하는 부분들 전부 Util 처리 (xml만 DB Type에 따라 분기하면 될 듯)
+
         // 2. 파일 생성
         // (1) Mapper xml 생성
         try {
@@ -49,14 +69,25 @@ public class MakeCrudJavaSpringRestCtroller {
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
+        
+        // (2) DTO 생성
+        
+        
+        // (3) DAO 생성
+        
+        
+        // (4) Service 생성
+        
+        
+        // (5) Controller 생성
 
 
-        // 4.Zip 파일 다운로드
+        // 3.Zip 파일 다운로드 설정
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/zip");
         response.addHeader("Content-Disposition", "attachment; filename=" + fileName + ".zip");
 
-        // 3. Zip 파일 생성
+        // 4. Zip 파일 생성
         try {
             zipOut = new ZipOutputStream(response.getOutputStream());
 
