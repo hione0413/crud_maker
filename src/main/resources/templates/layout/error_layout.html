@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="_ctx" th:content="${#httpServletRequest.getContextPath()}" />
+		<meta name="_csrf" th:content="${_csrf.token}"/>
+		<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+		<title>DB손보 QUERY PORTAL</title>
+
+		<th:block th:replace="fragment/client/config :: configFragment"></th:block>
+	</head>
+
+	<body>
+		<div class="wrapper">
+				<section class="content">
+					<th:block layout:fragment="content"></th:block>
+				</section>
+			<!--<th:block th:replace="fragment/footer :: footerFragment"></th:block>-->
+		</div>
+	</body>
+
+</html>

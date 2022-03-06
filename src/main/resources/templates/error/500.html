@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/error_layout">
+
+<!-- 해당 html 에서 사용할 css -->
+<th:block layout:fragment="css">
+
+</th:block>
+
+<!-- 해당 html 에서 사용할 js -->
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content">
+    <div id="initContent">
+        <section class="content-header">
+            <div class="container-fluid">
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="error-page">
+                <h2 class="headline text-danger">500</h2>
+                <div class="error-content">
+                    <h3><i class="fas fa-exclamation-triangle text-danger"></i> Internal Server Error</h3>
+                    <p>
+                        서버에서 오류가 발생하였습니다.<br>
+                        같은 문제가 지속된다면 관리자에게 연락바랍니다.<br>
+                        <a th:href="@{/welcome}">return to home</a>
+                    </p>
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</html>

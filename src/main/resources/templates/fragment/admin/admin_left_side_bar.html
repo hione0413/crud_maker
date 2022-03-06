@@ -1,0 +1,55 @@
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="adminLeftSideBarFragment">
+	<aside class="main-sidebar sidebar-dark-primary elevation-4">
+		<!-- Brand Logo -->
+		<a th:href="@{/}" class="brand-link">
+			<div class="row">
+				<img th:src="@{/img/logo/main-logo.png}" alt="Super Seeker" class="brand-image" style="width:85%; margin-left:auto; margin-right:auto;" />
+			</div>
+		</a>
+
+		<!-- Sidebar -->
+		<div class="sidebar">
+			<!-- Sidebar user (optional) -->
+			<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+				<div class="image">
+					<img th:src="@{/img/photo/customer.png}" class="img-circle elevation-2" alt="User Image">
+				</div>
+				<div class="info" style="width:70%;">
+					<!--<a href="#" class="d-block" >--><span sec:authentication="name" style="color: white;"></span><!--</a>--><br>
+					접속IP : <span sec:authentication="principal.clientIp"></span><br>
+					접속시간 : <span sec:authentication="principal.loginDateStr"></span><<br>
+							<p class="textIndent" sec:authentication="principal.loginTimeStr"></p>
+				</div>
+				<div class="info" sec:authorize="isAuthenticated()">
+					<a th:href="@{/logout}" class="d-block"><i class="nav-icon fas fa-sign-out-alt" title="로그아웃"></i></a>
+				</div>
+			</div>
+
+			<!-- SidebarSearch Form
+			<div class="form-inline">
+				<div class="input-group" data-widget="sidebar-search">
+					<input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+					<div class="input-group-append">
+						<button class="btn btn-sidebar">
+							<i class="fas fa-search fa-fw"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			-->
+			<!-- Sidebar Menu -->
+			<nav class="mt-2">
+				<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+					<div id="leftSideMenu"></div>
+				</ul>
+			</nav>
+			<!-- /.sidebar-menu -->
+		</div>
+		<!-- /.sidebar -->
+	</aside>
+</div>
+</html>

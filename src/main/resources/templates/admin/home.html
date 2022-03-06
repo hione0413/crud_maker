@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layout/admin_layout">
+
+	<th:block layout:fragment="css">
+
+	</th:block>
+
+	<div layout:fragment="content">
+		<!-- Preloader -->
+		<div class="preloader flex-column justify-content-center align-items-center">
+			<img class="animation__shake" th:src="@{/img/adminlte/AdminLTELogo.png}" alt="Lime Research Logo" height="60" width="60">
+		</div>
+		<div id="initContent"></div>
+	</div>
+
+	<th:block layout:fragment="script">
+		<script th:src="@{/js/admin/home.js}"></script>
+	</th:block>
+</html>
