@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
+import org.hionesoft.crudmaker.utils.CaseFormatUtil;
 import org.hionesoft.crudmaker.utils.DDLParserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -36,10 +36,20 @@ public class MakeCrudJavaSpringRestCtroller {
     @PostMapping("/create")
     public void makeCrudJavaSpring(
             @RequestParam(required = false, defaultValue = "oracle") String dbType,
-            @RequestParam String ddl,
+            // @RequestParam String ddl,
             HttpServletResponse response){
-        String fileName = "test";
-        List<File> fileList = new ArrayList<>();
+
+        String sql = "";
+        sql += "CREATE TABLE TABLE_CUSTOMER ( \n";
+        sql += "id int not null, \n";
+        sql += "name varchar(20) not null, \n";
+        sql += "age int not null, \n";
+        sql += "address varchar2(25) not null \n";
+        sql += ")";
+
+        String ddl = sql;
+
+        Map<String, File> fileMap = new HashMap<>();
 
         FileOutputStream fos = null;
         ZipOutputStream zipOut = null;
@@ -58,14 +68,23 @@ public class MakeCrudJavaSpringRestCtroller {
             Logger.error(msg);
             // TODO : Error Throw 처리
         }
-        
+
+
+        String mapperName = tablename + "_SQL.xml";
+        String dtoName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "DTO";
+        String daoName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "DAO";
+        String serviceName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "Service";
+        String serviceImplName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "ServiceImpl";
+        String restControllerName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "RestController";
+
+
         //TODO : 파일 생성하는 부분들 전부 Util 처리 (xml만 DB Type에 따라 분기하면 될 듯)
 
         // 2. 파일 생성
         // (1) Mapper xml 생성
         try {
-            File mapperXml = makeCrudJavaSpringService.createMapperXml();
-            fileList.add(mapperXml);
+            File mapperXml = makeCrudJavaSpringService.createMapperXml(tablename, columnDefinitions);
+            fileMap.put(mapperName, mapperXml);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
@@ -85,14 +104,19 @@ public class MakeCrudJavaSpringRestCtroller {
         // 3.Zip 파일 다운로드 설정
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/zip");
-        response.addHeader("Content-Disposition", "attachment; filename=" + fileName + ".zip");
+        response.addHeader("Content-Disposition", "attachment; filename=" + tablename + "_CRUD.zip");
 
         // 4. Zip 파일 생성
         try {
             zipOut = new ZipOutputStream(response.getOutputStream());
 
-            for(File file : fileList) {
-                zipOut.putNextEntry(new ZipEntry(file.getName()));
+            Set<Map.Entry<String, File>> entrySet = fileMap.entrySet();
+
+            for(Map.Entry<String, File> entry : entrySet) {
+                String key = entry.getKey();
+                File file = entry.getValue();
+
+                zipOut.putNextEntry(new ZipEntry(key));
                 fis = new FileInputStream(file);
 
                 StreamUtils.copy(fis, zipOut);

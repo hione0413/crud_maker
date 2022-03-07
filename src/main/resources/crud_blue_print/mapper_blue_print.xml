@@ -1,1 +1,28 @@
-Hello
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${TABLE_NAME}">
+
+    <select id="listCnt" resultType="int" parameterType="hashmap">
+
+    </select>
+
+    <select id="list" resultType="${DTO_NAME}" parameterType="hashmap">
+
+    </select>
+
+    <select id="view" resultType="${DTO_NAME}" parameterType="hashmap">
+
+    </select>
+
+    <insert id="insert" parameterType="${DTO_NAME}">
+
+    </insert>
+
+    <update id="update" parameterType="${DTO_NAME}">
+
+    </update>
+
+    <delete id="delete" parameterType="${DTO_NAME}">
+
+    </delete>
+</mapper>
