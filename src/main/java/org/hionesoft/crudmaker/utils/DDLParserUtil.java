@@ -5,6 +5,7 @@ import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
+import net.sf.jsqlparser.statement.create.table.Index;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,5 +54,14 @@ public class DDLParserUtil {
         }
 
         return columnNames;
+    }
+
+
+    public static List<Index> getColumnIndexsByDdl(Statement statement) {
+        if (statement instanceof CreateTable) {
+            CreateTable create = (CreateTable) statement;
+            return create.getIndexes();
+        }
+        return null;
     }
 }

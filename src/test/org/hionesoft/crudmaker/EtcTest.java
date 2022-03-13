@@ -1,11 +1,15 @@
 package org.hionesoft.crudmaker;
 
 import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
+import net.sf.jsqlparser.statement.create.table.CreateTable;
+import net.sf.jsqlparser.statement.create.table.Index;
 import org.apache.commons.io.FileUtils;
+import org.hibernate.loader.custom.sql.SQLQueryParser;
 import org.hionesoft.crudmaker.utils.DDLParserUtil;
-import org.hionesoft.crudmaker.utils.crud_maker.CRUDMapperXmlMaker;
+import org.hionesoft.crudmaker.crud_maker.CRUDMapperXmlMaker;
 import org.junit.Test;
 
 import java.io.File;
@@ -17,17 +21,27 @@ public class EtcTest {
     @Test
     public void testDdlParser() {
         String sql = "";
-        sql += "CREATE TABLE CUSTOMER ( \n";
-        sql += "id int not null, \n";
+        sql += "CREATE TABLE TBL_CUSTOMER ( \n";
+        sql += "id int not null PRIMATY KEY, \n";
         sql += "name varchar(20) not null, \n";
         sql += "age int not null, \n";
         sql += "address varchar2(25) not null \n";
+        sql += ", CONSTRAINT test PRIMARY KEY (id, name) \n";
         sql += ")";
 
         try {
             Statement statement = DDLParserUtil.parseDdl(sql);
-            DDLParserUtil.getTablenameByDdl(statement);
-            DDLParserUtil.getColumninfosByDdl(statement);
+//            DDLParserUtil.getTablenameByDdl(statement);
+//            DDLParserUtil.getColumninfosByDdl(statement);
+
+            if (statement instanceof CreateTable) {
+                CreateTable create = (CreateTable) statement;
+
+
+                List<Index> indexs = create.getIndexes(); // index 에 pk 정보가 담겨있다
+                List<String> options = create.getCreateOptionsStrings();
+            }
+
         } catch (JSQLParserException e) {
             // e.printStackTrace();
             String msg = e.getMessage();

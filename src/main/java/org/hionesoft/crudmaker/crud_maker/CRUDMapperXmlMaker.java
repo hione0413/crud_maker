@@ -1,4 +1,4 @@
-package org.hionesoft.crudmaker.utils.crud_maker;
+package org.hionesoft.crudmaker.crud_maker;
 
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import org.hionesoft.crudmaker.utils.CaseFormatUtil;

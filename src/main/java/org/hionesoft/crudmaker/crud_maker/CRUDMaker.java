@@ -1,4 +1,4 @@
-package org.hionesoft.crudmaker.utils.crud_maker;
+package org.hionesoft.crudmaker.crud_maker;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.ClassPathResource;
