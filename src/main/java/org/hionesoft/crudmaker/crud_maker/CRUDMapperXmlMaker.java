@@ -21,14 +21,12 @@ public class CRUDMapperXmlMaker extends CRUDMaker {
 
 
     /**
-     * @param tablename:
+     * @param crudMakerInfos:
      * @columnDefinitions: 칼럼 정보
      */
-    public File makeMapperXmlToJavaSpringMybatis(
-            String tablename,
-            List<ColumnDefinition> columnDefinitions) throws IOException {
+    public File makeMapperXmlToJavaSpringMybatis(CRUDMakerVo crudMakerInfos) throws IOException {
 
-        String dtoName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "DTO";
+        String dtoName = crudMakerInfos.getDtoName();
 
         ClassPathResource bluePrintResource = this.getBluePrintResource("crud_blue_print/mapper_blue_print.xml");
         File blueprint = bluePrintResource.getFile();
@@ -52,7 +50,7 @@ public class CRUDMapperXmlMaker extends CRUDMaker {
 
                 if(StringUtils.hasText(match)) {
                     if(match.equals("TABLE_NAME")) {
-                        sb.append(tablename);
+                        sb.append(crudMakerInfos.getTablename());
                     } else if (match.equals("DTO_NAME")){
                         sb.append(dtoName);
                     }

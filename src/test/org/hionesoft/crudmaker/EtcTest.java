@@ -74,9 +74,9 @@ public class EtcTest {
         }
 
         CRUDMapperXmlMaker maker = new CRUDMapperXmlMaker();
-        File targetFile = maker.makeMapperXmlToJavaSpringMybatis(tablename, columnDefinitions);
+        // File targetFile = maker.makeMapperXmlToJavaSpringMybatis(tablename, columnDefinitions);
 
-        FileUtils.copyFile(targetFile, new File("C:\\workspace\\filetest\\test.xml"));
+        // FileUtils.copyFile(targetFile, new File("C:\\workspace\\filetest\\test.xml"));
     }
 
 

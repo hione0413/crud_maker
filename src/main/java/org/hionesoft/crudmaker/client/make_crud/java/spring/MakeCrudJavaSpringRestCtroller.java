@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
+import org.hionesoft.crudmaker.crud_maker.CRUDMakerVo;
 import org.hionesoft.crudmaker.utils.CaseFormatUtil;
 import org.hionesoft.crudmaker.utils.DDLParserUtil;
 import org.slf4j.Logger;
@@ -55,36 +56,23 @@ public class MakeCrudJavaSpringRestCtroller {
         ZipOutputStream zipOut = null;
         FileInputStream fis = null;
 
-        String tablename = "";
-        List<ColumnDefinition> columnDefinitions = null;
-        
+        CRUDMakerVo crudMakerInfos = null;
         // 1. SQL DDL 분석 및 변수 세팅
         try {
-            Statement statement = DDLParserUtil.parseDdl(ddl);
-            tablename = DDLParserUtil.getTablenameByDdl(statement);
-            columnDefinitions = DDLParserUtil.getColumninfosByDdl(statement);
+            crudMakerInfos = new CRUDMakerVo(sql);
         } catch (JSQLParserException e) {
             String msg = e.getMessage();
             Logger.error(msg);
             // TODO : Error Throw 처리
         }
 
-
-        String mapperName = tablename + "_SQL.xml";
-        String dtoName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "DTO";
-        String daoName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "DAO";
-        String serviceName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "Service";
-        String serviceImplName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "ServiceImpl";
-        String restControllerName = CaseFormatUtil.changeSnakeToCamelUpper(tablename) + "RestController";
-
-
         //TODO : 파일 생성하는 부분들 전부 Util 처리 (xml만 DB Type에 따라 분기하면 될 듯)
 
         // 2. 파일 생성
         // (1) Mapper xml 생성
         try {
-            File mapperXml = makeCrudJavaSpringService.createMapperXml(tablename, columnDefinitions);
-            fileMap.put(mapperName, mapperXml);
+            File mapperXml = makeCrudJavaSpringService.createMapperXml(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getMapperName(), mapperXml);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
@@ -104,7 +92,7 @@ public class MakeCrudJavaSpringRestCtroller {
         // 3.Zip 파일 다운로드 설정
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/zip");
-        response.addHeader("Content-Disposition", "attachment; filename=" + tablename + "_CRUD.zip");
+        response.addHeader("Content-Disposition", "attachment; filename=" + crudMakerInfos.getTablename() + "_CRUD.zip");
 
         // 4. Zip 파일 생성
         try {

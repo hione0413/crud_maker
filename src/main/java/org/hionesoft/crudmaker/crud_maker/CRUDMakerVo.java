@@ -30,6 +30,7 @@ public class CRUDMakerVo {
 
     public CRUDMakerVo(String ddlQuery) throws JSQLParserException {
         Statement statement = DDLParserUtil.parseDdl(ddlQuery);
+
         this.tablename = DDLParserUtil.getTablenameByDdl(statement);
         this.columnDefinitions = DDLParserUtil.getColumninfosByDdl(statement);
         this.tableIndexs = DDLParserUtil.getColumnIndexsByDdl(statement);

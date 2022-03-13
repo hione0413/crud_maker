@@ -2,6 +2,7 @@ package org.hionesoft.crudmaker.client.make_crud.java.spring;
 
 import lombok.RequiredArgsConstructor;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
+import org.hionesoft.crudmaker.crud_maker.CRUDMakerVo;
 import org.hionesoft.crudmaker.crud_maker.CRUDMapperXmlMaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ public class MakeCrudJavaSpringService {
 
     private final CRUDMapperXmlMaker crudMapperXmlMaker;
 
-    public File createMapperXml(String tablename, List<ColumnDefinition> columnDefinitions) throws IOException {
-        return crudMapperXmlMaker.makeMapperXmlToJavaSpringMybatis(tablename, columnDefinitions);
+    public File createMapperXml(CRUDMakerVo crudMakerInfos) throws IOException {
+        return crudMapperXmlMaker.makeMapperXmlToJavaSpringMybatis(crudMakerInfos);
     }
 }
