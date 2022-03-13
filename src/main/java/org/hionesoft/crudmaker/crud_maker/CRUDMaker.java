@@ -1,5 +1,6 @@
 package org.hionesoft.crudmaker.crud_maker;
 
+import net.sf.jsqlparser.statement.create.table.ColDataType;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.ClassPathResource;
 
@@ -25,4 +26,10 @@ public class CRUDMaker {
         return resource;
     }
 
+
+    public String getColumnJavaType(ColDataType colDataType) {
+        String dbTypename = colDataType.getDataType();
+        System.out.println("dbTypename:::" + dbTypename);
+        return DbTypeMappingJavaType.getInstance().findJavaTypeByDbType(dbTypename);
+    }
 }

@@ -46,13 +46,16 @@ public class CRUDMakerVo {
         // PK SET 생성
         Set<String> tempSet = new HashSet<>();
 
-        for(Index index : tableIndexs) {
-            if("PRIMARY KEY".equals(index.getType())) {
-                for(Index.ColumnParams pkColumnName : index.getColumns()) {
-                    tempSet.add(pkColumnName.columnName);
+        if(tableIndexs != null) {
+            for(Index index : tableIndexs) {
+                if("PRIMARY KEY".equals(index.getType())) {
+                    for(Index.ColumnParams pkColumnName : index.getColumns()) {
+                        tempSet.add(pkColumnName.columnName);
+                    }
                 }
             }
         }
+
 
         for(ColumnDefinition column : columnDefinitions) {
             List<String> specs = column.getColumnSpecs();

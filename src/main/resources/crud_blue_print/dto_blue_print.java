@@ -5,5 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ExDto {
+public class ${DTO_NAME} {
+${COLUMNS_VAL}
 }

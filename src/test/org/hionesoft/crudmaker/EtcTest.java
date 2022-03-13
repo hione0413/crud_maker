@@ -8,6 +8,8 @@ import net.sf.jsqlparser.statement.create.table.CreateTable;
 import net.sf.jsqlparser.statement.create.table.Index;
 import org.apache.commons.io.FileUtils;
 import org.hibernate.loader.custom.sql.SQLQueryParser;
+import org.hionesoft.crudmaker.crud_maker.CRUDDtoMaker;
+import org.hionesoft.crudmaker.crud_maker.CRUDMakerVo;
 import org.hionesoft.crudmaker.utils.DDLParserUtil;
 import org.hionesoft.crudmaker.crud_maker.CRUDMapperXmlMaker;
 import org.junit.Test;
@@ -60,23 +62,23 @@ public class EtcTest {
         sql += "address varchar2(25) not null \n";
         sql += ")";
 
-        String tablename = "";
-        List<ColumnDefinition> columnDefinitions = null;
-
+        CRUDMakerVo crudMakerInfos = null;
+        // 1. SQL DDL 분석 및 변수 세팅
         try {
-            Statement statement = DDLParserUtil.parseDdl(sql);
-            tablename = DDLParserUtil.getTablenameByDdl(statement);
-            columnDefinitions = DDLParserUtil.getColumninfosByDdl(statement);
+            crudMakerInfos = new CRUDMakerVo(sql);
         } catch (JSQLParserException e) {
-            // e.printStackTrace();
             String msg = e.getMessage();
-            System.out.println(msg);
+            // TODO : Error Throw 처리
         }
 
-        CRUDMapperXmlMaker maker = new CRUDMapperXmlMaker();
+        // CRUDMapperXmlMaker maker = new CRUDMapperXmlMaker();
         // File targetFile = maker.makeMapperXmlToJavaSpringMybatis(tablename, columnDefinitions);
 
-        // FileUtils.copyFile(targetFile, new File("C:\\workspace\\filetest\\test.xml"));
+        CRUDDtoMaker maker = new CRUDDtoMaker();
+        File targetFile = maker.makeDtoToJavaSpringMybatis(crudMakerInfos);
+
+
+        FileUtils.copyFile(targetFile, new File("C:\\workspace\\filetest\\test.java"));
     }
 
 
