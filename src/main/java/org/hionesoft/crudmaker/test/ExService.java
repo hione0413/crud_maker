@@ -3,7 +3,8 @@ package org.hionesoft.crudmaker.test;
 import java.util.List;
 
 public interface ExService {
-    List<ExDto> list(PaggingVo paggingVo, ExDto dto);
+    int listCnt(SearchInfo searchInfo, ExDto dto);
+    List<ExDto> list(PaggingInfo paggingVo, SearchInfo searchInfo, ExDto dto);
     ExDto view(String pk);
     int insert(ExDto dto);
     int update(String pk, ExDto dto);

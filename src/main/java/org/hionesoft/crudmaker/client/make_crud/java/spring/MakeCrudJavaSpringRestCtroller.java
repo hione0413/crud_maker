@@ -1,6 +1,7 @@
 package org.hionesoft.crudmaker.client.make_crud.java.spring;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
@@ -30,8 +31,8 @@ import java.util.zip.ZipOutputStream;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/makecrud/java/spring")
+@Slf4j
 public class MakeCrudJavaSpringRestCtroller {
-    private final Logger Logger = LoggerFactory.getLogger(this.getClass());
     private final MakeCrudJavaSpringService makeCrudJavaSpringService;
 
     @PostMapping("/create")
@@ -62,7 +63,7 @@ public class MakeCrudJavaSpringRestCtroller {
             crudMakerInfos = new CRUDMakerVo(sql);
         } catch (JSQLParserException e) {
             String msg = e.getMessage();
-            Logger.error(msg);
+            log.error(msg);
             // TODO : Error Throw 처리
         }
 
@@ -78,10 +79,20 @@ public class MakeCrudJavaSpringRestCtroller {
         }
         
         // (2) DTO 생성
-        
+        try {
+            File dtoClassFile = makeCrudJavaSpringService.createDtoClass(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getDtoName(), dtoClassFile);
+        } catch (IOException e) {
+            // return ResponseEntity.noContent().build();
+        }
         
         // (3) DAO 생성
-        
+        try {
+            File daoClassFile = makeCrudJavaSpringService.createDaoClass(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getDaoName(), daoClassFile);
+        } catch (IOException e) {
+            // return ResponseEntity.noContent().build();
+        }
         
         // (4) Service 생성
         
@@ -115,10 +126,10 @@ public class MakeCrudJavaSpringRestCtroller {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try { if(fis != null) fis.close(); } catch (IOException e1) {Logger.error(e1.getMessage());/*ignore*/}
-            try { if(zipOut != null) zipOut.closeEntry();} catch (IOException e2) {Logger.error(e2.getMessage());/*ignore*/}
-            try { if(zipOut != null) zipOut.close();} catch (IOException e3) {Logger.error(e3.getMessage());/*ignore*/}
-            try { if(fos != null) fos.close(); } catch (IOException e4) {Logger.error(e4.getMessage());/*ignore*/}
+            try { if(fis != null) fis.close(); } catch (IOException e1) {log.error(e1.getMessage());/*ignore*/}
+            try { if(zipOut != null) zipOut.closeEntry();} catch (IOException e2) {log.error(e2.getMessage());/*ignore*/}
+            try { if(zipOut != null) zipOut.close();} catch (IOException e3) {log.error(e3.getMessage());/*ignore*/}
+            try { if(fos != null) fos.close(); } catch (IOException e4) {log.error(e4.getMessage());/*ignore*/}
         }
     }
 }

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class PaggingVo {
+public class PaggingInfo {
 
     @Setter
     private String searchCond;

@@ -1,8 +1,7 @@
 package org.hionesoft.crudmaker.test;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +13,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/test")
+@Slf4j
 public class ExController {
-    private static final Logger logger = LoggerFactory.getLogger(ExController.class);
     private final ExService service;
 
 
     @GetMapping(value = {"", "/"})
-    public ResponseEntity<?> list(@ModelAttribute PaggingVo paggingVo, @ModelAttribute ExDto dto) {
-        logger.info("[list] Start");
+    public ResponseEntity<?> list(@ModelAttribute PaggingInfo PaggingInfo, @ModelAttribute SearchInfo searchInfo, @ModelAttribute ExDto dto) {
+        List<ExDto> resultList = service.list(PaggingInfo, searchInfo, dto);
 
         Map<String, Object> responseMap = new HashMap<>();
-        List<ExDto> resultList = service.list(paggingVo, dto);
-
-        logger.info("[list] end");
-
         responseMap.put("list", resultList);
-        responseMap.put("pagging", paggingVo);
+        responseMap.put("PaggingInfo", PaggingInfo);
 
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
@@ -37,40 +32,28 @@ public class ExController {
 
     @GetMapping(value = {"/{pk}"})
     public ResponseEntity<?> view(@PathVariable String pk) {
-        logger.info("[list] Start");
-
         ExDto resultView = service.view(pk);
-
-
         return new ResponseEntity<>(resultView, HttpStatus.OK);
     }
 
 
-    @PostMapping(value = {"/{pk}"})
-    public ResponseEntity<?> insert(@PathVariable String pk, @ModelAttribute ExDto dto) {
-        logger.info("[list] Start");
-
+    @PostMapping(value = {"/"})
+    public ResponseEntity<?> insert(@ModelAttribute ExDto dto) {
         service.insert(dto);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
     @PutMapping(value = {"/{pk}"})
     public ResponseEntity<?> update(@PathVariable String pk, @ModelAttribute ExDto dto) {
-        logger.info("[list] Start");
-
         service.update(pk, dto);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
     @DeleteMapping(value = {"/{pk}"})
     public ResponseEntity<?> delete(@PathVariable String pk) {
-        logger.info("[list] Start");
-
         service.delete(pk);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

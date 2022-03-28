@@ -2,8 +2,6 @@ package org.hionesoft.crudmaker.crud_maker;
 
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import org.hionesoft.crudmaker.utils.CaseFormatUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -14,19 +12,18 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-
 @Component
-public class CRUDDtoMaker extends CRUDMaker {
+public class CRUDDaoMaker extends CRUDMaker {
 
     /**
      * @param crudMakerInfos:
      * @columnDefinitions: 칼럼 정보
      */
-    public File makeDtoToJavaSpringMybatis(CRUDMakerVo crudMakerInfos) throws IOException {
+    public File makeDaoToJavaSpringMybatis(CRUDMakerVo crudMakerInfos) throws IOException {
 
         String dtoName = crudMakerInfos.getDtoName();
 
-        ClassPathResource bluePrintResource = this.getBluePrintResource("crud_blue_print/dto_blue_print.java");
+        ClassPathResource bluePrintResource = this.getBluePrintResource("crud_blue_print/dao_blue_print.java");
         File blueprint = bluePrintResource.getFile();
         File tempFile = readyCrudTempFile(bluePrintResource);
 
@@ -47,20 +44,15 @@ public class CRUDDtoMaker extends CRUDMaker {
                 sb.append(line.substring(textStartPoint, matcher.start()));
 
                 if(StringUtils.hasText(match)) {
-                    if(match.equals("COLUMNS_VAL")) {
-                        // DTO 변수 입력 시작
-                        for(ColumnDefinition columnDefinition : crudMakerInfos.getColumnDefinitions()) {
-                            sb.append(
-                                "    private "
-                                + this.getColumnJavaType(columnDefinition.getColDataType())
-                                + " "
-                                + CaseFormatUtil.changeSnakeToCamelLower(columnDefinition.getColumnName()) + ";"
-                                + "\n"
-                            );
-                        }
+                    if(match.equals("DAO_NAME")) {
+                        sb.append(crudMakerInfos.getDaoName());
 
                     } else if (match.equals("DTO_NAME")){
                         sb.append(dtoName);
+
+                    } else if (match.equals("TABLE_NAME")){
+                        sb.append(crudMakerInfos.getTablename());
+
                     }
                     textStartPoint = matcher.end();
                 }

@@ -10,7 +10,7 @@ DDL 문으로 Spring Mybatis 기본 CRUD 생성 프로그램
 - [x] DDL 문 분석
 - [ ] Mapper XML 생성
 - [x] DTO 생성
-- [ ] DAO 생성
+- [x] DAO 생성
 - [ ] Service 생성
 - [ ] Controller 생성
 - [ ] Javascript 생성

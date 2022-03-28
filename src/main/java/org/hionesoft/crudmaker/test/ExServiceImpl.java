@@ -13,12 +13,22 @@ import java.util.Map;
 public class ExServiceImpl implements ExService {
     private final ExDao exDao;
 
-    public List<ExDto> list(PaggingVo paggingVo, ExDto dto) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("pagging", paggingVo);
-        paramMap.put("dto", dto);
 
-        return exDao.list(paramMap);
+    public int listCnt(SearchInfo searchInfo, ExDto dto) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("search", searchInfo);
+        params.put("dto", dto);
+
+        return exDao.listCnt(params);
+    }
+
+    public List<ExDto> list(PaggingInfo paggingInfo, SearchInfo searchInfo, ExDto dto) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pagging", paggingInfo);
+        params.put("search", searchInfo);
+        params.put("dto", dto);
+
+        return exDao.list(params);
     }
 
     public ExDto view(String pk) {
@@ -30,7 +40,8 @@ public class ExServiceImpl implements ExService {
     }
 
     public int update(String pk, ExDto dto) {
-        return exDao.update(pk, dto);
+        // dto.setPk(pk);
+        return exDao.update(dto);
     }
 
     public int delete(String pk) {
