@@ -59,6 +59,10 @@ public class CRUDMaker {
                 return crudMakerInfos.getServiceName();
             case "SERVICE_IMPL_NAME":
                 return crudMakerInfos.getServiceImplName();
+            case "CONTROLLER_NAME":
+                return crudMakerInfos.getControllerName();
+            case "CONTROLLER_ROOT_URL":
+                return CaseFormatUtil.changeUpperSnakeToLowerSnake(crudMakerInfos.getTablename());
             case "COLUMNS_VAL":
                 StringBuilder sb = new StringBuilder();
                 for(ColumnDefinition columnDefinition : crudMakerInfos.getColumnDefinitions()) {

@@ -68,24 +68,24 @@ public class MakeCrudJavaSpringRestCtroller {
         // 2. 파일 생성
         // (1) Mapper xml 생성
         try {
-            File mapperXml = makeCrudJavaSpringService.createMapperXml(crudMakerInfos);
-            fileMap.put(crudMakerInfos.getMapperName(), mapperXml);
+            File file = makeCrudJavaSpringService.createMapperXml(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getMapperName(), file);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
         
         // (2) DTO 생성
         try {
-            File dtoClassFile = makeCrudJavaSpringService.createDtoClass(crudMakerInfos);
-            fileMap.put(crudMakerInfos.getDtoName() + ".java", dtoClassFile);
+            File file = makeCrudJavaSpringService.createDtoClass(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getDtoName() + ".java", file);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
         
         // (3) DAO 생성
         try {
-            File daoClassFile = makeCrudJavaSpringService.createDaoClass(crudMakerInfos);
-            fileMap.put(crudMakerInfos.getDaoName() + ".java", daoClassFile);
+            File file = makeCrudJavaSpringService.createDaoClass(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getDaoName() + ".java", file);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
@@ -107,6 +107,12 @@ public class MakeCrudJavaSpringRestCtroller {
         
         
         // (5) Controller 생성
+        try {
+            File file = makeCrudJavaSpringService.createRestControllerClass(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getControllerName() + ".java", file);
+        } catch (IOException e) {
+            // return ResponseEntity.noContent().build();
+        }
 
 
         // 3.Zip 파일 다운로드 설정

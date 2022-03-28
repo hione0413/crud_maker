@@ -16,6 +16,7 @@ public class MakeCrudJavaSpringService {
     private final CRUDDtoMaker crudDtoMaker;
     private final CRUDDaoMaker crudDaoMaker;
     private final CRUDServiceMaker crudServiceMaker;
+    private final CRUDControllerMaker crudControllerMaker;
 
     public File createMapperXml(CRUDMakerVo crudMakerInfos) throws IOException {
         return crudMapperXmlMaker.makeMapperXmlToJavaSpringMybatis(crudMakerInfos);
@@ -35,5 +36,9 @@ public class MakeCrudJavaSpringService {
 
     public File createServiceImplClass(CRUDMakerVo crudMakerInfos) throws IOException {
         return crudServiceMaker.makeServiceImplClass(crudMakerInfos);
+    }
+
+    public File createRestControllerClass(CRUDMakerVo crudMakerInfos) throws IOException {
+        return crudControllerMaker.makeRestControllerClass(crudMakerInfos);
     }
 }

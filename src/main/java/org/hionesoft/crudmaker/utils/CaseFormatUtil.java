@@ -18,6 +18,11 @@ public class CaseFormatUtil {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, str);
     }
 
+
+    static public String changeUpperSnakeToLowerSnake(String str) {
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_UNDERSCORE, str);
+    }
+
     static public String changeCamelToSnake(String str) {
         return CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, str);
     }

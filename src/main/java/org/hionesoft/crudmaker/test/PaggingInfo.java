@@ -7,10 +7,6 @@ import lombok.Setter;
 public class PaggingInfo {
 
     @Setter
-    private String searchCond;
-    @Setter
-    private String searchText;
-    @Setter
     private int currentPageNo;
     @Setter
     private int recordCountPerPage = 10; // 10 is default

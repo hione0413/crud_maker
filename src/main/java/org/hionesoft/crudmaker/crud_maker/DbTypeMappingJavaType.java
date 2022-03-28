@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+
 public class DbTypeMappingJavaType {
     private static Map<String, List<String>> mapping = new HashMap<>();
 
