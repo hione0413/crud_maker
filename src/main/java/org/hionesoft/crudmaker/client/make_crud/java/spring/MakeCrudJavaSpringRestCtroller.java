@@ -77,7 +77,7 @@ public class MakeCrudJavaSpringRestCtroller {
         // (2) DTO 생성
         try {
             File dtoClassFile = makeCrudJavaSpringService.createDtoClass(crudMakerInfos);
-            fileMap.put(crudMakerInfos.getDtoName(), dtoClassFile);
+            fileMap.put(crudMakerInfos.getDtoName() + ".java", dtoClassFile);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
@@ -85,7 +85,7 @@ public class MakeCrudJavaSpringRestCtroller {
         // (3) DAO 생성
         try {
             File daoClassFile = makeCrudJavaSpringService.createDaoClass(crudMakerInfos);
-            fileMap.put(crudMakerInfos.getDaoName(), daoClassFile);
+            fileMap.put(crudMakerInfos.getDaoName() + ".java", daoClassFile);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
@@ -93,14 +93,14 @@ public class MakeCrudJavaSpringRestCtroller {
         // (4) Service 생성
         try {
             File file = makeCrudJavaSpringService.createServiceInterface(crudMakerInfos);
-            fileMap.put(crudMakerInfos.getServiceName(), file);
+            fileMap.put(crudMakerInfos.getServiceName() + ".java", file);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }
 
         try {
             File file = makeCrudJavaSpringService.createServiceImplClass(crudMakerInfos);
-            fileMap.put(crudMakerInfos.getServiceImplName(), file);
+            fileMap.put(crudMakerInfos.getServiceImplName() + ".java", file);
         } catch (IOException e) {
             // return ResponseEntity.noContent().build();
         }

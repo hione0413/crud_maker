@@ -54,7 +54,7 @@ public class CRUDMaker {
             case "DAO_NAME":
                 return crudMakerInfos.getDaoName();
             case "LOWER_DAO_NAME":
-                return CaseFormatUtil.changeUpperCamelToLowerCamel(crudMakerInfos.getDtoName());
+                return CaseFormatUtil.changeUpperCamelToLowerCamel(crudMakerInfos.getDaoName());
             case "SERVICE_NAME":
                 return crudMakerInfos.getServiceName();
             case "SERVICE_IMPL_NAME":
