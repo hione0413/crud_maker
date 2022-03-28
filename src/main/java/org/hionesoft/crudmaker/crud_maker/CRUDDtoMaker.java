@@ -1,9 +1,5 @@
 package org.hionesoft.crudmaker.crud_maker;
 
-import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
-import org.hionesoft.crudmaker.utils.CaseFormatUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,8 +19,6 @@ public class CRUDDtoMaker extends CRUDMaker {
      * @columnDefinitions: 칼럼 정보
      */
     public File makeDtoToJavaSpringMybatis(CRUDMakerVo crudMakerInfos) throws IOException {
-
-        String dtoName = crudMakerInfos.getDtoName();
 
         ClassPathResource bluePrintResource = this.getBluePrintResource("crud_blue_print/dto_blue_print.java");
         File blueprint = bluePrintResource.getFile();
@@ -47,21 +41,7 @@ public class CRUDDtoMaker extends CRUDMaker {
                 sb.append(line.substring(textStartPoint, matcher.start()));
 
                 if(StringUtils.hasText(match)) {
-                    if(match.equals("COLUMNS_VAL")) {
-                        // DTO 변수 입력 시작
-                        for(ColumnDefinition columnDefinition : crudMakerInfos.getColumnDefinitions()) {
-                            sb.append(
-                                "    private "
-                                + this.getColumnJavaType(columnDefinition.getColDataType())
-                                + " "
-                                + CaseFormatUtil.changeSnakeToCamelLower(columnDefinition.getColumnName()) + ";"
-                                + "\n"
-                            );
-                        }
-
-                    } else if (match.equals("DTO_NAME")){
-                        sb.append(dtoName);
-                    }
+                    sb.append(this.switchMatchToCrudValue(match, crudMakerInfos));
                     textStartPoint = matcher.end();
                 }
             }

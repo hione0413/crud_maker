@@ -1,7 +1,5 @@
 package org.hionesoft.crudmaker.crud_maker;
 
-import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
-import org.hionesoft.crudmaker.utils.CaseFormatUtil;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -20,8 +18,6 @@ public class CRUDDaoMaker extends CRUDMaker {
      * @columnDefinitions: 칼럼 정보
      */
     public File makeDaoToJavaSpringMybatis(CRUDMakerVo crudMakerInfos) throws IOException {
-
-        String dtoName = crudMakerInfos.getDtoName();
 
         ClassPathResource bluePrintResource = this.getBluePrintResource("crud_blue_print/dao_blue_print.java");
         File blueprint = bluePrintResource.getFile();
@@ -44,16 +40,7 @@ public class CRUDDaoMaker extends CRUDMaker {
                 sb.append(line.substring(textStartPoint, matcher.start()));
 
                 if(StringUtils.hasText(match)) {
-                    if(match.equals("DAO_NAME")) {
-                        sb.append(crudMakerInfos.getDaoName());
-
-                    } else if (match.equals("DTO_NAME")){
-                        sb.append(dtoName);
-
-                    } else if (match.equals("TABLE_NAME")){
-                        sb.append(crudMakerInfos.getTablename());
-
-                    }
+                    sb.append(this.switchMatchToCrudValue(match, crudMakerInfos));
                     textStartPoint = matcher.end();
                 }
             }

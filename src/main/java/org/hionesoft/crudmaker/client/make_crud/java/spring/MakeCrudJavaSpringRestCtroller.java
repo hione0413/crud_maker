@@ -3,13 +3,7 @@ package org.hionesoft.crudmaker.client.make_crud.java.spring;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import org.hionesoft.crudmaker.crud_maker.CRUDMakerVo;
-import org.hionesoft.crudmaker.utils.CaseFormatUtil;
-import org.hionesoft.crudmaker.utils.DDLParserUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +15,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -95,6 +91,19 @@ public class MakeCrudJavaSpringRestCtroller {
         }
         
         // (4) Service 생성
+        try {
+            File file = makeCrudJavaSpringService.createServiceInterface(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getServiceName(), file);
+        } catch (IOException e) {
+            // return ResponseEntity.noContent().build();
+        }
+
+        try {
+            File file = makeCrudJavaSpringService.createServiceImplClass(crudMakerInfos);
+            fileMap.put(crudMakerInfos.getServiceImplName(), file);
+        } catch (IOException e) {
+            // return ResponseEntity.noContent().build();
+        }
         
         
         // (5) Controller 생성

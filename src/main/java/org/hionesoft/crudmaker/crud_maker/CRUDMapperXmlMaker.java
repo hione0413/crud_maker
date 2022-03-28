@@ -23,8 +23,6 @@ public class CRUDMapperXmlMaker extends CRUDMaker {
      */
     public File makeMapperXmlToJavaSpringMybatis(CRUDMakerVo crudMakerInfos) throws IOException {
 
-        String dtoName = crudMakerInfos.getDtoName();
-
         ClassPathResource bluePrintResource = this.getBluePrintResource("crud_blue_print/mapper_blue_print.xml");
         File blueprint = bluePrintResource.getFile();
         File tempFile = readyCrudTempFile(bluePrintResource);
@@ -46,11 +44,7 @@ public class CRUDMapperXmlMaker extends CRUDMaker {
                 sb.append(line.substring(textStartPoint, matcher.start()));
 
                 if(StringUtils.hasText(match)) {
-                    if(match.equals("TABLE_NAME")) {
-                        sb.append(crudMakerInfos.getTablename());
-                    } else if (match.equals("DTO_NAME")){
-                        sb.append(dtoName);
-                    }
+                    sb.append(this.switchMatchToCrudValue(match, crudMakerInfos));
                     textStartPoint = matcher.end();
                 }
             }
