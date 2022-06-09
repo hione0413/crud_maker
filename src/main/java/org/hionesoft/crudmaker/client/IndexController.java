@@ -8,7 +8,7 @@ public class IndexController {
 
     @GetMapping("/welcome")
     public String index() {
-        return "client/index";
+        return "vue/index";
     }
 
 }
